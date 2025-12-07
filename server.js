@@ -1,21 +1,4 @@
 require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const app = express();
-const path = require("path");
-
-// CORS configuration
-const corsOptions = {
-  origin: process.env.CORS_ORIGINS
-    ? process.env.CORS_ORIGINS.split(",")
-    : ["http://localhost:3000", "http://localhost:5173"],
-  credentials: true
-};
-
-app.use(cors(corsOptions));
-app.use(express.json());
-
-// Servir carpeta de uploads como estática
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
