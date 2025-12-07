@@ -147,7 +147,15 @@ const { uploadUsuarios } = require("../utils/cloudinary");
 
 
 // Subir o actualizar foto (protegido)
-router.put("/:id/foto", authMiddleware, uploadUsuarios.single("foto"), (req, res) => {
+router.put("/:id/foto", authMiddleware, (req, res, next) => {
+  uploadUsuarios.single("foto")(req, res, (err) => {
+    if (err) {
+      console.error("❌ Error al subir foto (Cloudinary):", err);
+      return res.status(500).json({ error: "Error subiendo foto: " + (err.message || err) });
+    }
+    next();
+  });
+}, (req, res) => {
   const { id } = req.params;
   const { nombreCompleto } = req.body;
 

@@ -16,7 +16,15 @@ const { uploadReportes } = require("../utils/cloudinary");
 
 
 /* ========= Crear reporte (protegido) ========= */
-router.post("/", authMiddleware, uploadReportes.single("imagen"), (req, res) => {
+router.post("/", authMiddleware, (req, res, next) => {
+  uploadReportes.single("imagen")(req, res, (err) => {
+    if (err) {
+      console.error("❌ Error al subir imagen (Cloudinary):", err);
+      return res.status(500).json({ error: "Error subiendo imagen: " + (err.message || err) });
+    }
+    next();
+  });
+}, (req, res) => {
   const {
     titulo,
     descripcion,
