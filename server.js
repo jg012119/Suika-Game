@@ -1,4 +1,19 @@
 require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const path = require("path");
+
+// CORS configuration
+const corsOptions = {
+  origin: "*", // Permitir cualquier origen para APK/Mobile
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Servir carpeta de uploads como estática
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
