@@ -5,7 +5,7 @@ const db = require("../db");
 // Obtener todas las categorías
 router.get("/", (req, res) => {
   db.query("SELECT * FROM categoria", (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json(results);
   });
 });
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 router.get("/:idCategoria", (req, res) => {
   const { idCategoria } = req.params;
   db.query("SELECT * FROM categoria WHERE idCategoria = ?", [idCategoria], (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json(results[0]);
   });
 });
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
     "INSERT INTO categoria (nombre, descripcion) VALUES (?, ?)",
     [nombre, descripcion],
     (err, result) => {
-      if (err) return res.status(500).json({ error: err });
+      if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
       res.json({ idCategoria: result.insertId, nombre, descripcion });
     }
   );
@@ -41,7 +41,7 @@ router.put("/:idCategoria", (req, res) => {
     "UPDATE categoria SET nombre = ?, descripcion = ? WHERE idCategoria = ?",
     [nombre, descripcion, idCategoria],
     (err) => {
-      if (err) return res.status(500).json({ error: err });
+      if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
       res.json({ idCategoria: parseInt(idCategoria), nombre, descripcion });
     }
   );
@@ -52,7 +52,7 @@ router.put("/:idCategoria", (req, res) => {
 router.delete("/:idCategoria", (req, res) => {
   const { idCategoria } = req.params;
   db.query("DELETE FROM categoria WHERE idCategoria = ?", [idCategoria], (err) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json({ success: true });
   });
 });

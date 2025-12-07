@@ -11,7 +11,7 @@ router.get("/reportes", (req, res) => {
     FROM reportes
   `;
   db.query(query, (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json(results[0]);
   });
 });
@@ -20,7 +20,7 @@ router.get("/reportes", (req, res) => {
 // Obtener cantidad de usuarios
 router.get("/usuario", (req, res) => {
   db.query("SELECT COUNT(*) AS totalUsuarios FROM usuario", (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json({ totalUsuarios: results[0].totalUsuarios });
   });
 });
@@ -34,7 +34,7 @@ router.get("/categoria", (req, res) => {
     GROUP BY c.nombre
   `;
   db.query(query, (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+    if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
     res.json(results);
   });
 });
@@ -44,7 +44,7 @@ router.get("/votos", (req, res) => {
   db.query(
     "SELECT titulo, votos FROM reportes ORDER BY votos DESC LIMIT 10",
     (err, results) => {
-      if (err) return res.status(500).json({ error: err });
+      if (err) return res.status(500).json({ error: err.message || 'Error en la base de datos' });
       res.json(results);
     }
   );
